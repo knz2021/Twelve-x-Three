@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Twelve x Three</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: 'Arial', sans-serif;
+    }
+
+    h1 {
+      font-weight: bold;
+      margin-top: 20px;
+      color: rgb(0, 47, 255); /* 青い文字色 */
+    }
+
+    #game-board {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(3, 100px);
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2em;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      color: rgb(0, 47, 255); /* 青い文字色 */
+    }
+
+    .row-1 { background-color: #add8e6; }
+    .row-2 { background-color: #ffb6c1; }
+    .row-3 { background-color: #98fb98; }
+
+    .flipped.row-1 {
+      background-color: #add8e6 !important;
+      color: rgb(0, 47, 255); /* 青い文字色 */
+    }
+
+    .flipped.row-2 {
+      background-color: #ffb6c1 !important;
+      color: rgb(0, 47, 255); /* 青い文字色 */
+    }
+
+    .flipped.row-3 {
+      background-color: #98fb98 !important;
+      color: rgb(0, 47, 255); /* 青い文字色 */
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Twelve x Three</h1>
+
+  <div id="game-board"></div>
+
+  <script>
+    const words = [
+      ['吕@', '亚@', '拿@@@', '以@@', '玛@@', '以@@', '便@@', '西@', '犹@', '@', '迦@', '玛@@'],
+      ['安@@', '拿@@', '彼@', '达@', '多@', '腓@', '犹@', '马@', '西@', '雅@', '雅@', '约@'],
+      ['俄@@', '以@', '珊@', '巴@', '基@', '陀@', '崖@', '耶@@', '以@@', '以@', '押@', '参@']
+    ];
+
+    const translations = [
+      ['吕便', '亚设', '拿弗他利', '以萨迦', '玛拿西', '以法莲', '便雅悯', '西缅', '犹大', '但', '迦得', '玛拿西'],
+      ['安得烈', '拿但业', '彼得', '达太', '多吗', '腓力', '犹大', '马太', '西门', '大雅各', '小雅各', '约翰'],
+      
+      ['俄陀聂', '以笏', '珊迦', '巴拉', '基甸', '陀拉', '崖珥', '耶弗他', '以比赞', '以伦', '押顿', '参孙']
+    ];
+
+    const gameBoard = document.getElementById('game-board');
+
+    // Populate the game board with cards
+    for (let row = 0; row < 3; row++) {
+      for (let col = 0; col < 12; col++) {
+        const card = document.createElement('div');
+        card.classList.add('card', `row-${row + 1}`);
+        card.textContent = words[row][col];
+        card.addEventListener('click', flipCard);
+        gameBoard.appendChild(card);
+      }
+    }
+
+    // Function to handle card click event
+    function flipCard(event) {
+      const selectedCard = event.target;
+      const row = Math.floor(Array.from(gameBoard.children).indexOf(selectedCard) / 12);
+      selectedCard.classList.add('flipped', `row-${row + 1}`);
+      selectedCard.style.backgroundColor = '';
+      selectedCard.textContent = translations[row][Array.from(gameBoard.children).indexOf(selectedCard) % 12];
+      selectedCard.removeEventListener('click', flipCard);
+    }
+  </script>
+
+</body>
+</html>
